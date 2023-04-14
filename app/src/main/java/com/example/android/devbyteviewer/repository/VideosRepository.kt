@@ -65,6 +65,9 @@ class VideosRepository(private val database: VideosDatabase) {
      * FIX:
      * Use Transformations.map to convert the list of database objects to a list of domain objects
      * using the asDomainModel() conversion function.
+     *
+     * NB! Transformations.map kjører kun når en aktivitet eller et aktivt fragment observerer dataene.
+     *
      */
     val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
