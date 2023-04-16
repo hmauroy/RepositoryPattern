@@ -20,6 +20,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.example.android.devbyteviewer.R
 
 /**
  * Binding adapter used to hide the spinner once data is available.
@@ -38,5 +39,10 @@ fun hideIfNetworkError(view: View, isNetWorkError: Boolean, playlist: Any?) {
  */
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
-    Glide.with(imageView.context).load(url).into(imageView)
+    //Glide.with(imageView.context).load(url).into(imageView)
+    Glide.with(imageView.context)
+        .load(url)
+        .placeholder(R.drawable.loading_animation) // optional: set a placeholder image while loading
+        .error(R.drawable.ic_broken_image) // optional: set an error image if loading fails
+        .into(imageView)
 }
