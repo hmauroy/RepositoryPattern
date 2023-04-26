@@ -16,6 +16,7 @@
 
 package com.example.android.devbyteviewer.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.example.android.devbyteviewer.database.VideosDatabase
@@ -43,9 +44,12 @@ class VideosRepository(private val database: VideosDatabase) {
      */
     suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
+            Log.w("KLIKK","refreshVideos() startet.")
             /**
              * Inside the withContext block, fetch the DevByte video playlist from the network using
              * the Retrofit service instance, DevByteNetwork.
+             * Hvis netverk er nede vil getPlaylist() returnere IOException tilbake
+             * til refreshDataFromRepository() i viewModel.
              */
             val playlist = DevByteNetwork.devbytes.getPlaylist()
             /**
@@ -54,8 +58,15 @@ class VideosRepository(private val database: VideosDatabase) {
              * class. Call the insertAll() DAO method, passing in the playlist retrieved from the
              * network. Use the asDatabaseModel() extension function to map the playlist to the database object.
              */
+            Log.d("KLIKK","etter getPlaylist()")
             database.videoDao.insertAll(playlist.asDatabaseModel())
+            Log.d("KLIKK","etter insertAll()")
         }
+        Log.d("KLIKK","etter withContext(Dispatchers.IO)")
+    }
+
+    fun sayTekst(tekst: String) {
+        Log.d("KLIKK",tekst)
     }
 
     /**

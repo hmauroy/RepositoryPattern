@@ -17,7 +17,10 @@
 package com.example.android.devbyteviewer.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import androidx.room.RoomDatabase
+import com.example.android.devbyteviewer.database.VideosDatabase
 import com.example.android.devbyteviewer.database.getDatabase
 import com.example.android.devbyteviewer.domain.DevByteVideo
 import com.example.android.devbyteviewer.network.DevByteNetwork
@@ -87,7 +90,10 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      * init{} is called immediately when this ViewModel is created.
      */
     init {
-        // TODO: Replace with a call to the refreshDataFromRepository9) method
+        // TODO: Replace with a call to the refreshDataFromRepository) method
+        videosRepository.sayTekst("Hei Henrik")
+        val db : VideosDatabase = getDatabase(application)
+        Log.i("KLIKK","db: ${db}")
         refreshDataFromRepository() // This code fetches the video playlist from the repository, not directly from the network.
     }
 
@@ -108,6 +114,7 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
                 _isNetworkErrorShown.value = false
 
             } catch (networkError: IOException) {
+                Log.e("KLIKK", "$networkError")
                 // Show a Toast error message and hide the progress bar.
                 if(playlist.value.isNullOrEmpty())
                     _eventNetworkError.value = true
